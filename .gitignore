@@ -3,3 +3,6 @@
 
 # package
 node_modules
+
+#build files
+/dist
