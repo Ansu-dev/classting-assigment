@@ -18,8 +18,8 @@ async function bootstrap() {
     }
     // * Swagger SetUp
     const config = new DocumentBuilder()
-        .setTitle('Webudding Commerce API')
-        .setDescription('Webudding Commerce 2.0 docs')
+        .setTitle('Nest Template API')
+        .setDescription('Nest Template 1.0 docs')
         .setVersion('2.0.0')
         .addBearerAuth(
             {
@@ -29,7 +29,7 @@ async function bootstrap() {
                 description: 'Enter JWT accessToken',
                 in: 'header',
             },
-            'user-auth',
+            'x-access-token',
         )
         .build();
     const document = SwaggerModule.createDocument(app, config, {
