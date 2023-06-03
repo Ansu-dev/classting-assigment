@@ -20,7 +20,7 @@ async function bootstrap() {
     const config = new DocumentBuilder()
         .setTitle('Nest Template API')
         .setDescription('Nest Template 1.0 docs')
-        .setVersion('2.0.0')
+        .setVersion('1.0.0')
         .addBearerAuth(
             {
                 type: 'http',
