@@ -2,7 +2,10 @@
 .env.*
 
 # package
-node_modules
+/node_modules
+
+# OS
+.DS_Store
 
 #build files
 /dist
