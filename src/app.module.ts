@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IndexModule } from './modules/index.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeormService } from './typeorm/typeorm.service';
 
 @Module({
     imports: [
@@ -11,6 +13,11 @@ import { IndexModule } from './modules/index.module';
             envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.prod',
         }),
         IndexModule,
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useClass: TypeormService,
+            inject: [ConfigService],
+        }),
     ],
     controllers: [AppController],
     providers: [AppService],
