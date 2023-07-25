@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subscribe } from '../models/Subscribe.entity';
 import { Repository } from 'typeorm';
+import { User } from '../models/User.entity';
+import { School } from '../models/School.entity';
 
 @Injectable()
 export class SubscribeRepository {
@@ -10,6 +12,18 @@ export class SubscribeRepository {
         private subscribeRepository: Repository<Subscribe>,
     ) {}
 
+    async create(user: User, school: School): Promise<Subscribe> {
+        const subscribe = this.subscribeRepository.create();
+        subscribe.user = user;
+        subscribe.school = school;
+        subscribe.subscribeDate = new Date();
+        return await this.subscribeRepository.save(subscribe);
+    }
+
+    async save(subscribe: Subscribe): Promise<Subscribe> {
+        return await this.subscribeRepository.save(subscribe);
+    }
+
     async findOneByUserIdAndSchoolId(userId: number, schoolId: number): Promise<Subscribe | null> {
         return await this.subscribeRepository
             .createQueryBuilder('sub')
@@ -17,7 +31,28 @@ export class SubscribeRepository {
             .innerJoin('sub.school', 's')
             .where('u.id = :userId', { userId })
             .andWhere('s.id = :schoolId', { schoolId })
+            .getOne();
+    }
+
+    async getOneBySubscribe(userId: number, schoolId: number): Promise<Subscribe | null> {
+        return await this.subscribeRepository
+            .createQueryBuilder('sub')
+            .innerJoin('sub.user', 'u')
+            .innerJoin('sub.school', 's')
+            .where('u.id = :userId', { userId })
+            .andWhere('s.id = :schoolId', { schoolId })
             .andWhere('sub.subscribe = 1')
+            .getOne();
+    }
+
+    async getOneByUnsubscribe(userId: number, schoolId: number): Promise<Subscribe | null> {
+        return await this.subscribeRepository
+            .createQueryBuilder('sub')
+            .innerJoin('sub.user', 'u')
+            .innerJoin('sub.school', 's')
+            .where('u.id = :userId', { userId })
+            .andWhere('s.id = :schoolId', { schoolId })
+            .andWhere('sub.subscribe = 0')
             .getOne();
     }
 }

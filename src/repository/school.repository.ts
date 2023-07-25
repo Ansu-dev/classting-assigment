@@ -25,6 +25,13 @@ export class SchoolRepository {
         return await this.schoolRepository.save(school);
     }
 
+    async findOneBySchoolId(schoolId: number): Promise<School | null> {
+        return await this.schoolRepository
+            .createQueryBuilder('s')
+            .where('id = :schoolId', { schoolId })
+            .getOne();
+    }
+
     async getOneLocationAndName(location: Location, name: string): Promise<School | null> {
         return await this.schoolRepository
             .createQueryBuilder('s')
