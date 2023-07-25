@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { IndexModule } from './modules/index.module';
 import { Logger } from '@nestjs/common';
+import { LoggingInterceptor } from './interceptor/logging.interceptor';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -40,6 +41,10 @@ async function bootstrap() {
     const endPoint = process.env.SWAGEER_END_POINT ?? '/swagger';
     SwaggerModule.setup(endPoint, app, document);
 
+    // * global interceptor
+    app.useGlobalInterceptors(new LoggingInterceptor());
+
+    // * prefix
     app.setGlobalPrefix('api/v2');
 
     const port = process.env.SEVER_PORT ? Number(process.env.SERVER_PORT) : 3000;
