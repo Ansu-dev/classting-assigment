@@ -47,6 +47,12 @@ describe('ShoolService', () => {
         subscribe: true,
     };
 
+    const unsubscribeObject = {
+        userId: 1,
+        schoolId: 1,
+        subscribe: false,
+    };
+
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
@@ -105,8 +111,8 @@ describe('ShoolService', () => {
         });
     });
 
-    describe('구독 생성', () => {
-        it('구독 완료', async () => {
+    describe('구독', () => {
+        it('구독 생성', async () => {
             const userId = 1;
             const schoolId = 1;
             // * 유저 검증을 통과 가정
@@ -115,11 +121,33 @@ describe('ShoolService', () => {
             // * 학교 페이지 검증을 통과 가정
             jest.spyOn(schoolRepository, 'findOneBySchoolId').mockResolvedValue(schoolObject);
 
-            await service.subscribeSchool(schoolId, userId);
+            // * 구독 여부 확인
+            jest.spyOn(subscribeRepository, 'findOneByUserIdAndSchoolId').mockResolvedValue(null);
 
+            await service.subscribeSchool(schoolId, userId);
             // * 저장 함수 1번 실행
             expect(subscribeRepository.create).toHaveBeenCalledTimes(1);
         });
+        it('재구독', async () => {
+            const userId = 1;
+            const schoolId = 1;
+            // * 유저 검증을 통과 가정
+            jest.spyOn(userRepository, 'findOneById').mockResolvedValue(userObject);
+
+            // * 학교 페이지 검증을 통과 가정
+            jest.spyOn(schoolRepository, 'findOneBySchoolId').mockResolvedValue(schoolObject);
+
+            // * 구독 여부 확인
+            jest.spyOn(subscribeRepository, 'findOneByUserIdAndSchoolId').mockResolvedValue(
+                unsubscribeObject,
+            );
+
+            await service.subscribeSchool(schoolId, userId);
+
+            // * 저장 함수 1번 실행
+            expect(subscribeRepository.save).toHaveBeenCalledTimes(1);
+        });
+
         it('[Error] 이미 구독이된 학교 페이지', async () => {
             const userId = 1;
             const schoolId = 1;
