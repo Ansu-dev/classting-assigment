@@ -86,7 +86,8 @@ describe('ShoolService', () => {
             try {
                 await service.schoolNameValidator(body.location, body.name);
             } catch (error: any) {
-                expect(error.response.resultCode).toEqual(11000);
+                // * throwError에 대한 처리
+                expect(error.response.resultCode).toEqual(-11000);
                 expect(error.response.data).toBe('이미 존재하는 학교페이지 입니다.');
             }
         });

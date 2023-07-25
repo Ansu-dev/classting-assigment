@@ -11,13 +11,13 @@ export class SchoolRepository {
         private schoolRepository: Repository<School>,
     ) {}
 
-    async create(data: CreateSchoolPageType): Promise<School> {
+    async create(data: CreateSchoolPageType): Promise<void> {
         const { location, name, user } = data;
         const school = this.schoolRepository.create();
         school.location = location;
         school.name = name;
         school.user = user;
-        return await this.schoolRepository.save(school);
+        await this.schoolRepository.save(school);
     }
 
     async save(school: School): Promise<School> {
