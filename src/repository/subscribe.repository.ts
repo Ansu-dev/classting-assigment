@@ -44,4 +44,15 @@ export class SubscribeRepository {
             .andWhere('sub.subscribe = 1')
             .getOne();
     }
+
+    async getOneByUnsubscribe(userId: number, schoolId: number): Promise<Subscribe | null> {
+        return await this.subscribeRepository
+            .createQueryBuilder('sub')
+            .innerJoin('sub.user', 'u')
+            .innerJoin('sub.school', 's')
+            .where('u.id = :userId', { userId })
+            .andWhere('s.id = :schoolId', { schoolId })
+            .andWhere('sub.subscribe = 0')
+            .getOne();
+    }
 }

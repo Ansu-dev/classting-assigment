@@ -111,7 +111,7 @@ describe('ShoolService', () => {
         });
     });
 
-    describe('구독', () => {
+    describe('구독 하기', () => {
         it('구독 생성', async () => {
             const userId = 1;
             const schoolId = 1;
@@ -151,14 +151,46 @@ describe('ShoolService', () => {
         it('[Error] 이미 구독이된 학교 페이지', async () => {
             const userId = 1;
             const schoolId = 1;
-            jest.spyOn(subscribeRepository, 'findOneByUserIdAndSchoolId').mockResolvedValue(
-                subscribeObject,
-            );
+            jest.spyOn(subscribeRepository, 'getOneBySubscribe').mockResolvedValue(subscribeObject);
             try {
                 await service.subscribeValidator(schoolId, userId);
             } catch (error: any) {
                 expect(error.response.resultCode).toEqual(-12010);
                 expect(error.response.data).toBe('이미 구독된 학교페이지 입니다.');
+            }
+        });
+    });
+
+    describe('구독 취소', () => {
+        it('구독 취소 성공', async () => {
+            const userId = 1;
+            const schoolId = 1;
+
+            // * 유저 검증을 통과 가정
+            jest.spyOn(userRepository, 'findOneById').mockResolvedValue(userObject);
+
+            // * 학교 페이지 검증을 통과 가정
+            jest.spyOn(schoolRepository, 'findOneBySchoolId').mockResolvedValue(schoolObject);
+
+            // * 구독 여부 확인
+            jest.spyOn(subscribeRepository, 'findOneByUserIdAndSchoolId').mockResolvedValue(
+                subscribeObject,
+            );
+
+            await service.unsubscibeSchool(schoolId, userId);
+
+            // * 저장 함수 1번 실행
+            expect(subscribeRepository.save).toHaveBeenCalledTimes(1);
+        });
+        it('[Error] 이미 구독취소된 학교 페이지', async () => {
+            const userId = 1;
+            const schoolId = 1;
+            jest.spyOn(subscribeRepository, 'getOneByUnsubscribe').mockResolvedValue(unsubscribeObject);
+            try {
+                await service.unsubscribeValidator(schoolId, userId);
+            } catch (error: any) {
+                expect(error.response.resultCode).toEqual(-12011);
+                expect(error.response.data).toBe('이미 구독이 취소된 학교페이지 입니다.');
             }
         });
     });

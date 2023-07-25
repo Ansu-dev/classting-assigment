@@ -70,7 +70,7 @@ export class SchoolService {
         }
         const school = await this.schoolRepository.findOneBySchoolId(schoolId);
         if (!school) {
-            return throwError(401, 12001);
+            return throwError(404, 12001);
         }
 
         // * 학교페이지 구독여부 판별
@@ -93,6 +93,30 @@ export class SchoolService {
         // TODO : 구독의 유무 확인
         // TODO : 이미 구독이 취소되어있다면 동작x
         // TODO : 구독을 취소할 경우 상태를 false, 취소 시간을 기입
+        // * 유저가 실제 존재하는 유저인지 판별
+        const user = await this.userRepository.findOneById(userId);
+        if (!user) {
+            return throwError(401, 10000);
+        }
+        const school = await this.schoolRepository.findOneBySchoolId(schoolId);
+        if (!school) {
+            return throwError(404, 12001);
+        }
+
+        const subscribe = await this.subscribeRepository.findOneByUserIdAndSchoolId(userId, schoolId);
+        if (!subscribe) {
+            return throwError(404, 12012);
+        }
+
+        // * 학교페이지 구독취소여부 판별
+        await this.unsubscribeValidator(schoolId, userId);
+
+        // TODO : softDelete 사용
+        subscribe.subscribe = false;
+        subscribe.unsubscribeDate = new Date();
+        await this.subscribeRepository.save(subscribe);
+
+        return { resultCode: 1, data: null };
     }
 
     // ! 검증 함수
@@ -108,6 +132,13 @@ export class SchoolService {
         const subscribe = await this.subscribeRepository.getOneBySubscribe(userId, schoolId);
         if (subscribe) {
             return throwError(400, 12010);
+        }
+    }
+
+    async unsubscribeValidator(schoolId: number, userId: number): Promise<void> {
+        const subscribe = await this.subscribeRepository.getOneByUnsubscribe(userId, schoolId);
+        if (subscribe) {
+            return throwError(400, 12011);
         }
     }
 }
