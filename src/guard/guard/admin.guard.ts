@@ -1,4 +1,5 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { throwError } from 'src/config/errorMessage.config';
 import { UserRepository } from 'src/repository/user.repository';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class AdminGuard implements CanActivate {
         const userId = req.user.userId;
         const user = await this.userRepository.findOneById(userId);
         if (user?.role.name !== 'admin') {
-            throw new UnauthorizedException();
+            throwError(401, 10001);
         }
         return true;
     }
