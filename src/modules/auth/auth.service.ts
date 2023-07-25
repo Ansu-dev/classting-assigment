@@ -49,7 +49,7 @@ export class AuthService {
         // TODO : 비밀번호 검증(test code 작성)
         const result = await this.cryptoService.comparePassword(password, user.password);
         if (!result) {
-            return throwError(400, 10001);
+            return throwError(400, 11000);
         }
 
         const userId = user.id;

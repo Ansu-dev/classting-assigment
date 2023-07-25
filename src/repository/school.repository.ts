@@ -28,7 +28,9 @@ export class SchoolRepository {
         return await this.schoolRepository
             .createQueryBuilder('s')
             .where('location = :location', { location })
-            .andWhere('name = :name', { name })
+            .andWhere("REGEXP_REPLACE(name, '\\\\s', '') = REGEXP_REPLACE(:name, '\\\\s', '')", {
+                name,
+            }) // * 공백제거해서 비교
             .getOne();
     }
 }

@@ -5,7 +5,7 @@ import { UserRepository } from '../../repository/user.repository';
 import { Location } from '../../models/School.entity';
 
 // * mock repository 객체를 반복문으로 한번에 생성하기 위한 함수
-// * ㅇ
+// * mockRepository의 함수를 모두 명시해줄수 없기때문에 기존에 있는 함수를 Mock 함수로 사용
 export const getMockRepository = (targetRepository) => {
     let mockRepository = {};
 

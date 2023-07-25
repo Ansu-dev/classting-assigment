@@ -36,7 +36,7 @@ export class SchoolService {
         const school = await this.schoolRepository.getOneLocationAndName(location, name);
         // * 만약 이미 학교페이지가 존재할 경우
         if (school) {
-            return throwError(400, 11000);
+            return throwError(400, 12000);
         }
     }
 }
