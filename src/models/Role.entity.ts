@@ -13,7 +13,7 @@ export class Role {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 30, nullable: false, comment: '권한 이름' })
+    @Column({ length: 30, nullable: false, comment: '권한 이름 (admin / user' })
     name: string;
 
     @CreateDateColumn({ type: 'timestamp' })
