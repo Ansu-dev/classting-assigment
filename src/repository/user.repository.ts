@@ -26,12 +26,10 @@ export class UserRepository {
             .getOne();
     }
 
-    async getOneBySignIn(data: SignInRequestDto): Promise<User | null> {
-        const { email, password } = data;
+    async findOneByEmail(email: string): Promise<User | null> {
         return await this.userRepository
             .createQueryBuilder('u')
             .where('email = :email', { email })
-            .andWhere('password = :password', { password })
             .getOne();
     }
 }

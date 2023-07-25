@@ -39,6 +39,9 @@ async function bootstrap() {
     });
     const endPoint = process.env.SWAGEER_END_POINT ?? '/swagger';
     SwaggerModule.setup(endPoint, app, document);
+
+    app.setGlobalPrefix('api/v2');
+
     const port = process.env.SEVER_PORT ? Number(process.env.SERVER_PORT) : 3000;
     await app.listen(port, () => {
         Logger.log(`SERVER - ${port}PORT CONNECTED`);
