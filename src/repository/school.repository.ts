@@ -39,8 +39,8 @@ export class SchoolRepository {
         const { page, perPage, search } = filter;
         const query = this.schoolRepository
             .createQueryBuilder('s')
-            .skip(page * perPage)
-            .take(perPage)
+            .skip(Number(page) * Number(perPage))
+            .take(Number(perPage))
             .orderBy('createdAt', 'DESC'); // * 최신 등록 순
 
         if (search) {

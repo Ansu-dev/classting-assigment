@@ -37,7 +37,6 @@ export class SchoolService {
     }
 
     async getSchools(userId: number, query: GetSchoolsQueryDto) {
-        console.log(query);
         // * 유저가 실제 존재하는 유저인지 판별
         const user = await this.userRepository.findOneById(userId);
         if (!user) {
