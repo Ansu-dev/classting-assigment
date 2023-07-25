@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Location, School } from '../models/School.entity';
 import { CreateSchoolPageType } from '../modules/school/dto/types/create.types';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
+import { GetSchoolsQueryDto } from '../modules/school/dto/request/getSchool.query.dto';
 
 @Injectable()
 export class SchoolRepository {
@@ -32,5 +33,24 @@ export class SchoolRepository {
                 name,
             }) // * 공백제거해서 비교
             .getOne();
+    }
+
+    async getManyAndCountFilter(filter: GetSchoolsQueryDto): Promise<[School[], number]> {
+        const { page, perPage, search } = filter;
+        const query = this.schoolRepository
+            .createQueryBuilder('s')
+            .skip(Number(page) * Number(perPage))
+            .take(Number(perPage))
+            .orderBy('createdAt', 'DESC'); // * 최신 등록 순
+
+        if (search) {
+            query.where(
+                new Brackets((qb) => {
+                    qb.orWhere('location = :location', { location: search });
+                    qb.orWhere('name like :name', { name: `%${search}%` });
+                }),
+            );
+        }
+        return await query.getManyAndCount();
     }
 }
