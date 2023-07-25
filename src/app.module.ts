@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IndexModule } from './modules/index.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeormService } from './typeorm/typeorm.service';
+import { AccessTokenStrategy } from './guard/strategy/accessToken.strategy';
 
 @Module({
     imports: [
@@ -20,6 +21,6 @@ import { TypeormService } from './typeorm/typeorm.service';
         }),
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [AppService, AccessTokenStrategy],
 })
 export class AppModule {}
