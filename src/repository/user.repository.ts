@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/models/User.entity';
+import { SignInRequestDto } from 'src/modules/user/dto/request/signIn.request.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -22,6 +23,15 @@ export class UserRepository {
             .createQueryBuilder('u')
             .innerJoinAndSelect('u.role', 'r')
             .where('u.id = :userId', { userId })
+            .getOne();
+    }
+
+    async getOneBySignIn(data: SignInRequestDto): Promise<User | null> {
+        const { email, password } = data;
+        return await this.userRepository
+            .createQueryBuilder('u')
+            .where('email = :email', { email })
+            .andWhere('password = :password', { password })
             .getOne();
     }
 }
