@@ -32,7 +32,7 @@ export class SchoolRepository {
             .getOne();
     }
 
-    async findOneBySchooIdAndUserId(userId: number, schoolId: number): Promise<School | null> {
+    async getOneBySchooIdAndUserId(userId: number, schoolId: number): Promise<School | null> {
         return await this.schoolRepository
             .createQueryBuilder('s')
             .innerJoinAndSelect('s.user', 'u')

@@ -40,6 +40,12 @@ describe('NoticeService', () => {
         name: '중앙고등학교',
     };
 
+    const noticeObject = {
+        id: 1,
+        title: '제목',
+        content: '내용',
+    };
+
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
@@ -92,20 +98,58 @@ describe('NoticeService', () => {
             // * 저장 함수 1번 실행
             expect(noticeRepository.create).toHaveBeenCalledTimes(1);
         });
-        it('[Error] 접근할수 없는 학교 페이지', async () => {
+        it('[Error] 접근할 수 없는 학교 페이지', async () => {
             const userId = 1;
             const schoolId = 1;
 
+            jest.spyOn(schoolRepository, 'getOneBySchooIdAndUserId').mockResolvedValue(null);
+
             try {
                 await service.schoolPageValidate(userId, schoolId);
-                jest.spyOn(schoolRepository, 'findOneBySchooIdAndUserId').mockResolvedValue(null);
             } catch (error: any) {
                 // * throwError에 대한 처리
                 expect(error.response.resultCode).toEqual(-10002);
-                expect(error.response.data).toBe('접근할수 없는 학교 페이지');
+                expect(error.response.data).toBe('접근할 수 없는 학교 페이지');
             }
         });
     });
-    describe('학교 페이지 소식 수정', () => {});
+    describe('학교 페이지 소식 수정', () => {
+        it('소식 수정 성공', async () => {
+            const userId = 1;
+            const noticeId = 1;
+            const body = {
+                title: '제목 수정',
+                content: '내용 수정',
+            };
+
+            // * 유저 검증을 통과 가정
+            jest.spyOn(userRepository, 'findOneById').mockResolvedValue(userObject);
+
+            // * 게시물 검증을 통과 가정
+            jest.spyOn(noticeRepository, 'findOneByNoticeId').mockResolvedValue(noticeObject);
+
+            // * validate 통과 가정
+            jest.spyOn(service, 'noticeValidate').mockResolvedValue();
+
+            await service.updateNotice(userId, noticeId, body);
+
+            // * 저장 함수 1번 실행
+            expect(noticeRepository.update).toHaveBeenCalledTimes(1);
+        });
+        it('[Error] 접근할 수 없는 게시물', async () => {
+            const userId = 1;
+            const noticeId = 1;
+
+            jest.spyOn(noticeRepository, 'getOneByNoticeIdAndUserId').mockResolvedValue(null);
+
+            try {
+                await service.noticeValidate(userId, noticeId);
+            } catch (error: any) {
+                // * throwError에 대한 처리
+                expect(error.response.resultCode).toEqual(-10003);
+                expect(error.response.data).toBe('접근할 수 없는 게시물');
+            }
+        });
+    });
     describe('학교 페이지 소식 삭제', () => {});
 });
