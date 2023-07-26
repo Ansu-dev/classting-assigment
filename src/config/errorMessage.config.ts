@@ -15,6 +15,7 @@ export const ErrorMessage = {
     // * common
     10000: { resultCode: -10000, data: '존재하지 않는 계정' },
     10001: { resultCode: -10001, data: '접근할수 없는 권한' },
+    10002: { resultCode: -10002, data: '접근할수 없는 학교 페이지' },
 
     // * login
     11000: { resultCode: -11000, data: '옳지 않는 비밀번호' },
@@ -36,6 +37,7 @@ export function throwError(status: number, resultCode: number) {
     if (status === 400) {
         throw new BadRequestException(errorMsg);
     } else if (status === 401) {
+        console.log(errorMsg);
         throw new UnauthorizedException(errorMsg);
     } else if (status === 403) {
         throw new ForbiddenException(errorMsg);

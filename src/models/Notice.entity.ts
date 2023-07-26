@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+import { School } from './School.entity';
 
 @Entity({ name: 'notice' })
 export class Notice {
@@ -14,6 +23,16 @@ export class Notice {
     @Column({ default: false, comment: '활성화 여부' })
     enable: boolean;
 
+    @ManyToOne(() => School, (school) => school.notice, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+    @JoinColumn()
+    school: School;
+
     @Column({ type: 'timestamp' })
     deletedAt: Date | null;
+
+    @CreateDateColumn({ type: 'timestamp' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: 'timestamp' })
+    updatedAt: Date;
 }
