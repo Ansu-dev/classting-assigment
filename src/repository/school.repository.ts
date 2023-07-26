@@ -32,6 +32,15 @@ export class SchoolRepository {
             .getOne();
     }
 
+    async findOneBySchooIdAndUserId(userId: number, schoolId: number): Promise<School | null> {
+        return await this.schoolRepository
+            .createQueryBuilder('s')
+            .innerJoinAndSelect('s.user', 'u')
+            .where('s.id = :schoolId', { schoolId })
+            .andWhere('u.id = :userId', { userId })
+            .getOne();
+    }
+
     async getOneLocationAndName(location: Location, name: string): Promise<School | null> {
         return await this.schoolRepository
             .createQueryBuilder('s')
