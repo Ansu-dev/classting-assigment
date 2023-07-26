@@ -151,5 +151,39 @@ describe('NoticeService', () => {
             }
         });
     });
-    describe('학교 페이지 소식 삭제', () => {});
+    describe('학교 페이지 소식 삭제', () => {
+        it('소식 삭제 성공', async () => {
+            const userId = 1;
+            const noticeId = 1;
+
+            // * 유저 검증을 통과 가정
+            jest.spyOn(userRepository, 'findOneById').mockResolvedValue(userObject);
+
+            // * 게시물 검증을 통과 가정
+            jest.spyOn(noticeRepository, 'findOneByNoticeId').mockResolvedValue(noticeObject);
+
+            // * validate 통과 가정
+            jest.spyOn(service, 'noticeValidate').mockResolvedValue();
+
+            await service.deleteNotice(userId, noticeId);
+
+            // * 저장 함수 1번 실행
+            expect(noticeRepository.update).toHaveBeenCalledTimes(1);
+        });
+
+        it('[Error] 접근할 수 없는 게시물', async () => {
+            const userId = 1;
+            const noticeId = 1;
+
+            jest.spyOn(noticeRepository, 'getOneByNoticeIdAndUserId').mockResolvedValue(null);
+
+            try {
+                await service.noticeValidate(userId, noticeId);
+            } catch (error: any) {
+                // * throwError에 대한 처리
+                expect(error.response.resultCode).toEqual(-10003);
+                expect(error.response.data).toBe('접근할 수 없는 게시물');
+            }
+        });
+    });
 });

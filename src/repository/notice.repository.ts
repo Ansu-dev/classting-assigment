@@ -21,7 +21,7 @@ export class NoticeRepository {
         return await this.noticeRepository.save(notice);
     }
 
-    async update(userId: number, noticeId: number, data: UpdateNoticeRequestDto): Promise<void> {
+    async update(userId: number, noticeId: number, data: any): Promise<void> {
         await this.noticeRepository
             .createQueryBuilder('n')
             .innerJoin('n.school', 's')
