@@ -6,6 +6,8 @@ import { UserRepository } from '../../repository/user.repository';
 import { WriteNoticeRequestDto } from './dto/request/writeNotice.request.dto';
 import { throwError } from '../../config/errorMessage.config';
 import { CreateNoticeType } from './dto/types/create.types';
+import { UpdateNoticeRequestDto } from './dto/request/updateNotice.request.dto';
+import { DeleteNoticeType } from './dto/types/delete.types';
 
 @Injectable()
 export class NoticeService {
@@ -42,10 +44,63 @@ export class NoticeService {
         return { resultCode: 1, data: null };
     }
 
+    async updateNotice(userId: number, noticeId: number, body: UpdateNoticeRequestDto) {
+        const { title, content } = body;
+        // * 유저가 실제 존재하는 유저인지 판별
+        const user = await this.userRepository.findOneById(userId);
+        if (!user) {
+            return throwError(401, 10000);
+        }
+        // * 실제 소식이 존재하는지 판별
+        const notice = await this.noticeRepository.findOneByNoticeId(noticeId);
+        if (!notice) {
+            return throwError(404, 12020);
+        }
+
+        // * 해당 유저가 학교페이지의 관리자인지 판별
+        await this.noticeValidate(userId, noticeId);
+
+        if (title || content) {
+            await this.noticeRepository.update(userId, noticeId, body);
+        }
+        return { resultCode: 1, data: null };
+    }
+
+    async deleteNotice(userId: number, noticeId: number) {
+        // * 유저가 실제 존재하는 유저인지 판별
+        const user = await this.userRepository.findOneById(userId);
+        if (!user) {
+            return throwError(401, 10000);
+        }
+        // * 실제 소식이 존재하는지 판별
+        const notice = await this.noticeRepository.findOneByNoticeId(noticeId);
+        if (!notice) {
+            return throwError(404, 12020);
+        }
+
+        // * 해당 유저가 학교페이지의 관리자인지 판별
+        await this.noticeValidate(userId, noticeId);
+
+        const deleteData: DeleteNoticeType = {
+            enable: false,
+            deletedAt: new Date(),
+        };
+        await this.noticeRepository.update(userId, noticeId, deleteData);
+        return { resultCode: 1, data: null };
+    }
+
+    // ! Validate
     async schoolPageValidate(userId: number, schoolId: number): Promise<void> {
-        const school = await this.schoolRepository.findOneBySchooIdAndUserId(userId, schoolId);
+        const school = await this.schoolRepository.getOneBySchooIdAndUserId(userId, schoolId);
         if (!school) {
             return throwError(401, 10002);
+        }
+    }
+
+    async noticeValidate(userId: number, noticeId: number): Promise<void> {
+        const notice = await this.noticeRepository.getOneByNoticeIdAndUserId(noticeId, userId);
+        if (!notice) {
+            return throwError(401, 10003);
         }
     }
 }
