@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { NoticeService } from './notice.service';
 import { AccessTokenGuard } from '../../guard/guard/accessToken.guard';
 import { AdminGuard } from '../../guard/guard/admin.guard';
@@ -24,5 +24,11 @@ export class NoticeController {
         @Body() body: UpdateNoticeRequestDto,
     ) {
         return await this.noticeService.updateNotice(userId, noticeId, body);
+    }
+
+    @Delete(':noticeId')
+    @UseGuards(AccessTokenGuard, AdminGuard)
+    async getNotices(@GetUserId() userId: number, @Param('noticeId') noticeId: number) {
+        return await this.noticeService.deleteNotice(userId, noticeId);
     }
 }
