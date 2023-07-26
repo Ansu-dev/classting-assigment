@@ -38,21 +38,29 @@ export class SchoolService {
 
     async getSchools(userId: number, query: GetSchoolsQueryDto) {
         // * 유저가 실제 존재하는 유저인지 판별
-        const user = await this.userRepository.findOneById(userId);
-        if (!user) {
-            return throwError(401, 10000);
-        }
         const [rows, count] = await this.schoolRepository.getManyAndCountFilter(query);
         const items: GetSchoolResData[] = [];
         for (const row of rows) {
-            // * 해당 학교 구독여부 판별
             const schoolId = row.id;
-            const subscribe = await this.subscribeRepository.getOneBySubscribe(userId, schoolId);
+            let subscribeCheck = false;
+
+            // * 회원/비회원에 대한 예외처리
+            if (userId) {
+                const user = await this.userRepository.findOneById(userId);
+                if (!user) {
+                    return throwError(401, 10000);
+                }
+                // * 해당 학교 구독여부 판별
+                const subscribe = await this.subscribeRepository.getOneBySubscribe(userId, schoolId);
+                if (subscribe) {
+                    subscribeCheck = true;
+                }
+            }
             items.push({
                 schoolId: schoolId,
                 location: row.location,
                 name: row.name,
-                subscribe: subscribe ? true : false,
+                subscribe: subscribeCheck,
                 createdAt: row.createdAt,
             });
         }
