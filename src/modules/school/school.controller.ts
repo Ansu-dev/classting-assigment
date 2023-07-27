@@ -20,7 +20,7 @@ export class ShoolController {
     @UseGuards(AccessTokenGuard, AdminGuard)
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '(관리자) 학교 페이지 생성' })
-    @ApiResponse({ status: 200, type: ResultSuccessResDto, description: '(관리자) 학교 페이지 생성 성공' })
+    @ApiResponse({ status: 201, type: ResultSuccessResDto, description: '(관리자) 학교 페이지 생성 성공' })
     @ApiResponse({ status: 401, type: UnauthorizedUser, description: '[Error] 존재하지 않는 계정' })
     @ApiResponse({ status: 402, type: UnauthorizedAdminUser, description: '[Error] 접근할 수 없는 권한' })
     async create(@GetUserId() userId: number, @Body() body: CreateSchoolPageRequestDto) {
@@ -31,7 +31,7 @@ export class ShoolController {
     @UseGuards(AccessTokenGuard)
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지 목록' })
-    @ApiResponse({ status: 200, type: GetSchoolResDto, description: '구독 중인 학교 페이지 목록 성공' })
+    @ApiResponse({ status: 201, type: GetSchoolResDto, description: '구독 중인 학교 페이지 목록 성공' })
     @ApiResponse({ status: 401, type: UnauthorizedUser, description: '[Error] 존재하지 않는 계정' })
     async getSubscribeSchool(@GetUserId() userId: number, @Query() query: GetSchoolsQueryDto) {
         return await this.schoolService.getSubscribeSchool(userId, query);
@@ -41,7 +41,7 @@ export class ShoolController {
     @UseGuards(AccessTokenGuard)
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지 구독' })
-    @ApiResponse({ status: 200, type: ResultSuccessResDto, description: '학교 페이지 구독 성공' })
+    @ApiResponse({ status: 201, type: ResultSuccessResDto, description: '학교 페이지 구독 성공' })
     @ApiResponse({ status: 401, type: UnauthorizedUser, description: '[Error] 존재하지 않는 계정' })
     @ApiResponse({
         status: 404,
@@ -56,7 +56,7 @@ export class ShoolController {
     @UseGuards(AccessTokenGuard)
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지 구독 취소' })
-    @ApiResponse({ status: 200, type: ResultSuccessResDto, description: '학교 페이지 구독 취소 성공' })
+    @ApiResponse({ status: 201, type: ResultSuccessResDto, description: '학교 페이지 구독 취소 성공' })
     @ApiResponse({ status: 401, type: UnauthorizedUser, description: '[Error] 존재하지 않는 계정' })
     @ApiResponse({
         status: 403,

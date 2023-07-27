@@ -17,7 +17,7 @@ export class UserController {
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지 소식 모아보기' })
     @ApiResponse({
-        status: 200,
+        status: 201,
         type: GetSubscribeNoticeResDto,
         description: '구독 중인 학교페이지 소식 모아보기 성공',
     })

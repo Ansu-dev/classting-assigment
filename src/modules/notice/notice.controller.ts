@@ -34,7 +34,7 @@ export class NoticeController {
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '(관리자) 학교 페이지 내에 소식을 작성' })
     @ApiResponse({
-        status: 200,
+        status: 201,
         type: ResultSuccessResDto,
         description: '(관리자) 학교 페이지내 소식 작성 성공',
     })
@@ -54,7 +54,7 @@ export class NoticeController {
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '(관리자) 학교 페이지 내에 소식을 수정' })
     @ApiResponse({
-        status: 200,
+        status: 201,
         type: ResultSuccessResDto,
         description: '(관리자) 학교 페이지내 소식 수정 성공',
     })
@@ -78,7 +78,7 @@ export class NoticeController {
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '(관리자) 학교 페이지 내에 소식을 삭제' })
     @ApiResponse({
-        status: 200,
+        status: 201,
         type: ResultSuccessResDto,
         description: '(관리자) 학교 페이지내 소식 삭제 성공',
     })
@@ -98,7 +98,7 @@ export class NoticeController {
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지별 소식(최신순 정렬)' })
     @ApiResponse({
-        status: 200,
+        status: 201,
         type: GetSubscribeNoticeResDto,
         description: '구독 중이 학교 페이지 소식 리스트 성공',
     })
