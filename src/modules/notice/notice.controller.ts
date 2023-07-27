@@ -1,4 +1,3 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import {
     Body,
     Controller,
@@ -52,7 +51,7 @@ export class NoticeController {
     async getNotices(@GetUserId() userId: number, @Param('noticeId') noticeId: number) {
         return await this.noticeService.deleteNotice(userId, noticeId);
     }
-  
+
     async deleteNotice(@GetUserId() userId: number, @Param('noticeId') noticeId: number) {
         return await this.noticeService.deleteNotice(userId, noticeId);
     }
