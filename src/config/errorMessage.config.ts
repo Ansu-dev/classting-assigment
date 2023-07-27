@@ -14,7 +14,9 @@ export const ErrorMessage = {
 
     // * common
     10000: { resultCode: -10000, data: '존재하지 않는 계정' },
-    10001: { resultCode: -10001, data: '접근할수 없는 권한' },
+    10001: { resultCode: -10001, data: '접근할 수 없는 권한' },
+    10002: { resultCode: -10002, data: '접근할 수 없는 학교 페이지' },
+    10003: { resultCode: -10003, data: '접근할 수 없는 게시물' },
 
     // * login
     11000: { resultCode: -11000, data: '옳지 않는 비밀번호' },
@@ -27,6 +29,9 @@ export const ErrorMessage = {
     12010: { resultCode: -12010, data: '이미 구독된 학교페이지 입니다.' },
     12011: { resultCode: -12011, data: '이미 구독이 취소된 학교페이지 입니다.' },
     12012: { resultCode: -12012, data: '존재하지 않는 구독입니다.' },
+
+    // * notice
+    12020: { resultCode: -12020, data: '존재하지 않는 게시물 입니다.' },
 } as const;
 
 type ErrorMessage = (typeof ErrorMessage)[keyof typeof ErrorMessage];
@@ -36,6 +41,7 @@ export function throwError(status: number, resultCode: number) {
     if (status === 400) {
         throw new BadRequestException(errorMsg);
     } else if (status === 401) {
+        console.log(errorMsg);
         throw new UnauthorizedException(errorMsg);
     } else if (status === 403) {
         throw new ForbiddenException(errorMsg);

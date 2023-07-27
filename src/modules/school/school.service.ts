@@ -25,7 +25,7 @@ export class SchoolService {
             return throwError(401, 10000);
         }
         // * 위치 + 학교명이 같은 페이지가 개설된것이 있는지 판별
-        this.schoolNameValidator(location, name);
+        await this.schoolNameValidator(location, name);
 
         const schoolData = {
             location: location,
@@ -119,7 +119,6 @@ export class SchoolService {
         // * 학교페이지 구독취소여부 판별
         await this.unsubscribeValidator(schoolId, userId);
 
-        // TODO : softDelete 사용
         subscribe.subscribe = false;
         subscribe.unsubscribeDate = new Date();
         await this.subscribeRepository.save(subscribe);

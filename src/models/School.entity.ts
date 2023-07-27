@@ -3,11 +3,13 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { User } from './User.entity';
+import { Notice } from './Notice.entity';
 
 export enum Location {
     seoul = '서울',
@@ -40,4 +42,7 @@ export class School {
 
     @UpdateDateColumn({ type: 'timestamp' })
     updatedAt: Date;
+
+    @OneToMany(() => Notice, (notice) => notice.school, { cascade: true })
+    notice: Notice;
 }
