@@ -60,5 +60,7 @@ export class NoticeController {
         @GetUserId() userId: number,
         @Param('schoolId', ParseIntPipe) schoolId: number,
         @Query() query: GetSubscribeNoticesQueryDto,
-    ) {}
+    ) {
+        return await this.noticeService.getSubscribeNotices(userId, schoolId, query);
+    }
 }
