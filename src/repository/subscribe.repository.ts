@@ -4,6 +4,7 @@ import { Subscribe } from '../models/Subscribe.entity';
 import { Repository } from 'typeorm';
 import { User } from '../models/User.entity';
 import { School } from '../models/School.entity';
+import { GetSchoolsQueryDto } from 'src/modules/school/dto/request/getSchool.query.dto';
 
 @Injectable()
 export class SubscribeRepository {
@@ -54,5 +55,21 @@ export class SubscribeRepository {
             .andWhere('s.id = :schoolId', { schoolId })
             .andWhere('sub.subscribe = 0')
             .getOne();
+    }
+
+    async getManyAndRowBySubscribe(
+        userId: number,
+        data: GetSchoolsQueryDto,
+    ): Promise<[Subscribe[], number]> {
+        const { page, perPage } = data;
+        return await this.subscribeRepository
+            .createQueryBuilder('sub')
+            .innerJoin('sub.user', 'u')
+            .innerJoinAndSelect('sub.school', 's')
+            .where('u.id = :userId', { userId })
+            .andWhere('sub.subscribe = 1')
+            .skip(Number(page) * Number(perPage))
+            .take(Number(perPage))
+            .getManyAndCount();
     }
 }

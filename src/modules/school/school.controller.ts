@@ -20,13 +20,12 @@ export class ShoolController {
         return await this.schoolService.create(userId, body);
     }
 
-    // TODO : 구독중인 학교 페이지 목록(수정 필요)
     @Get()
     @UseGuards(AccessTokenGuard)
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지 목록' })
-    async getSchool(@GetUserId() userId: number, @Query() query: GetSchoolsQueryDto) {
-        return await this.schoolService.getSchools(userId, query);
+    async getSubscribeSchool(@GetUserId() userId: number, @Query() query: GetSchoolsQueryDto) {
+        return await this.schoolService.getSubscribeSchool(userId, query);
     }
 
     @Post('subscribe/:schoolId')

@@ -12,9 +12,6 @@ export class GetSchoolResData {
     name: string;
 
     @ApiProperty()
-    subscribe: boolean;
-
-    @ApiProperty()
     createdAt: Date;
 }
 

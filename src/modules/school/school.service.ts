@@ -36,32 +36,24 @@ export class SchoolService {
         return { resultCode: 1, data: null };
     }
 
-    async getSchools(userId: number, query: GetSchoolsQueryDto) {
+    async getSubscribeSchool(userId: number, query: GetSchoolsQueryDto) {
         // * 유저가 실제 존재하는 유저인지 판별
-        const [rows, count] = await this.schoolRepository.getManyAndCountFilter(query);
+        const user = await this.userRepository.findOneById(userId);
+        if (!user) {
+            return throwError(401, 10000);
+        }
         const items: GetSchoolResData[] = [];
-        for (const row of rows) {
-            const schoolId = row.id;
-            let subscribeCheck = false;
+        // * 현재 구독중인 학교 페이지
+        const [rows, count] = await this.subscribeRepository.getManyAndRowBySubscribe(userId, query);
 
-            // * 회원/비회원에 대한 예외처리
-            if (userId) {
-                const user = await this.userRepository.findOneById(userId);
-                if (!user) {
-                    return throwError(401, 10000);
-                }
-                // * 해당 학교 구독여부 판별
-                const subscribe = await this.subscribeRepository.getOneBySubscribe(userId, schoolId);
-                if (subscribe) {
-                    subscribeCheck = true;
-                }
-            }
+        // * 구독 중인 페이지 목록
+        for (const row of rows) {
+            const school = row.school;
             items.push({
-                schoolId: schoolId,
-                location: row.location,
-                name: row.name,
-                subscribe: subscribeCheck,
-                createdAt: row.createdAt,
+                schoolId: school.id,
+                location: school.location,
+                name: school.name,
+                createdAt: school.createdAt,
             });
         }
         return { resultCode: 1, data: { items, count } };
