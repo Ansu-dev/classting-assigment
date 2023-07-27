@@ -8,7 +8,7 @@ import { LoggingInterceptor } from './interceptor/logging.interceptor';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     // * cors SetUp
-    const envAllow = process.env.COMMERCE_ALLOW_CORS_LIST;
+    const envAllow = process.env.ALLOW_CORS_LIST;
     if (envAllow) {
         const allowList = envAllow.split(',');
         app.enableCors({
@@ -19,19 +19,16 @@ async function bootstrap() {
     }
     // * Swagger SetUp
     const config = new DocumentBuilder()
-        .setTitle('Nest Template API')
-        .setDescription('Nest Template 1.0 docs')
+        .setTitle('Classting Assigment API')
+        .setDescription('Classting Assigment 1.0 docs')
         .setVersion('1.0.0')
-        .addBearerAuth(
-            {
-                type: 'http',
-                scheme: 'bearer',
-                name: 'user-auth',
-                description: 'Enter JWT accessToken',
-                in: 'header',
-            },
-            'x-access-token',
-        )
+        .addBearerAuth({
+            type: 'http',
+            scheme: 'bearer',
+            name: 'authorization',
+            description: 'Enter JWT accessToken',
+            in: 'header',
+        })
         .build();
     const document = SwaggerModule.createDocument(app, config, {
         include: [IndexModule],
@@ -45,7 +42,7 @@ async function bootstrap() {
     app.useGlobalInterceptors(new LoggingInterceptor());
 
     // * prefix
-    app.setGlobalPrefix('api/v2');
+    app.setGlobalPrefix('api/v1');
 
     const port = process.env.SEVER_PORT ? Number(process.env.SERVER_PORT) : 3000;
     await app.listen(port, () => {

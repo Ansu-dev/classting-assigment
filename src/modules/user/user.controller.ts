@@ -1,12 +1,13 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AccessTokenGuard } from '../../guard/guard/accessToken.guard';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUserId } from 'src/decorator/getUser.decorator';
 import { GetSubscribeNoticeQueryDto } from './dto/request/getSubscribeNotice.query.dto';
 import { GetSubscribeNoticeResDto } from './dto/response/getSubscribeNotice.response.dto';
 import { UnauthorizedUser } from '../auth/dto/response/error.response.dto';
 
+@ApiTags('소식 모아보기')
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}

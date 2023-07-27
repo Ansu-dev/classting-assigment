@@ -5,7 +5,7 @@ export class GetSubscribeNoticeData {
     @ApiProperty()
     noticeId: number;
 
-    @ApiProperty({ type: Location })
+    @ApiProperty({ type: 'enum', enum: Location, default: Location.seoul })
     location: Location;
 
     @ApiProperty()
@@ -21,7 +21,7 @@ export class GetSubscribeNoticeData {
     createdAt: Date;
 }
 
-export class GetSubscribeNoticeItem {
+class GetSubscribeNoticeItem {
     @ApiProperty({ type: [GetSubscribeNoticeData] })
     items: GetSubscribeNoticeData[];
 
