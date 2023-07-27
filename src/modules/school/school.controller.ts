@@ -56,7 +56,7 @@ export class ShoolController {
     @UseGuards(AccessTokenGuard)
     @ApiBearerAuth('authorization')
     @ApiOperation({ summary: '구독 중인 학교 페이지 구독 취소' })
-    @ApiResponse({ status: 200, type: ResultSuccessResDto, description: '학교 페이지 구독 성공' })
+    @ApiResponse({ status: 200, type: ResultSuccessResDto, description: '학교 페이지 구독 취소 성공' })
     @ApiResponse({ status: 401, type: UnauthorizedUser, description: '[Error] 존재하지 않는 계정' })
     @ApiResponse({
         status: 403,
