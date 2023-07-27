@@ -7,7 +7,7 @@ import { CreateSchoolPageRequestDto } from './dto/request/create.request.dto';
 import { GetSchoolsQueryDto } from './dto/request/getSchool.query.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResultSuccessResDto } from '../common/common.response.dto';
-import { UnauthorizedUser } from '../auth/dto/response/error.response.dto';
+import { UnauthorizedAdminUser, UnauthorizedUser } from '../auth/dto/response/error.response.dto';
 import { GetSchoolResDto } from './dto/response/getSchool.response.dto';
 import { ForbidenSubscriptionResDto, NotfoundSchoolResDto } from './dto/response/error.response.dto';
 
@@ -22,6 +22,7 @@ export class ShoolController {
     @ApiOperation({ summary: '(관리자) 학교 페이지 생성' })
     @ApiResponse({ status: 200, type: ResultSuccessResDto, description: '(관리자) 학교 페이지 생성 성공' })
     @ApiResponse({ status: 401, type: UnauthorizedUser, description: '[Error] 존재하지 않는 계정' })
+    @ApiResponse({ status: 402, type: UnauthorizedAdminUser, description: '[Error] 접근할 수 없는 권한' })
     async create(@GetUserId() userId: number, @Body() body: CreateSchoolPageRequestDto) {
         return await this.schoolService.create(userId, body);
     }

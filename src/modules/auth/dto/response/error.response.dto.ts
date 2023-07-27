@@ -8,3 +8,11 @@ export class UnauthorizedUser {
     @ApiProperty({ default: ErrorMessage[10000].data })
     data: string;
 }
+
+export class UnauthorizedAdminUser {
+    @ApiProperty({ default: ErrorMessage[10001].resultCode })
+    resultCode: number;
+
+    @ApiProperty({ default: ErrorMessage[10001].data })
+    data: string;
+}
