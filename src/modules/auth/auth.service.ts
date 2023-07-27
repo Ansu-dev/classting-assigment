@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { SignUpRequestDto } from '../user/dto/request/signUp.request.dto';
 import { throwError } from 'src/config/errorMessage.config';
 import { JwtService } from 'src/libs/jwt/jwt.service';
 import { CryptoService } from 'src/libs/crypto/crypto.service';
 import { UserRepository } from 'src/repository/user.repository';
-import { SignInRequestDto } from '../user/dto/request/signIn.request.dto';
 import { RoleRepository } from 'src/repository/role.repository';
+import { SignUpRequestDto } from './dto/request/signUp.request.dto';
+import { SignInRequestDto } from './dto/request/signIn.request.dto';
 
 @Injectable()
 export class AuthService {

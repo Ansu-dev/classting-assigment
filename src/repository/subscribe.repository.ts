@@ -25,6 +25,15 @@ export class SubscribeRepository {
         return await this.subscribeRepository.save(subscribe);
     }
 
+    async findManyByUserId(userId: number): Promise<Subscribe[]> {
+        return await this.subscribeRepository
+            .createQueryBuilder('sub')
+            .innerJoin('sub.user', 'u')
+            .innerJoinAndSelect('sub.school', 's')
+            .where('u.id = :userId', { userId })
+            .getMany();
+    }
+
     async findOneByUserIdAndSchoolId(userId: number, schoolId: number): Promise<Subscribe | null> {
         return await this.subscribeRepository
             .createQueryBuilder('sub')
