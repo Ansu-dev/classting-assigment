@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Notice } from '../models/Notice.entity';
 import { Repository } from 'typeorm';
 import { CreateNoticeType } from '../modules/notice/dto/types/create.types';
-import { UpdateNoticeRequestDto } from '../modules/notice/dto/request/updateNotice.request.dto';
 import { GetSubscribeNoticesQueryDto } from '../modules/notice/dto/request/getSubscribeNotices.request.dto';
+import { GetSubscribeNoticeQueryDto } from '../modules/user/dto/request/getSubscribeNotice.query.dto';
 
 @Injectable()
 export class NoticeRepository {
@@ -51,7 +51,6 @@ export class NoticeRepository {
             .getOne();
     }
 
-
     async getManyByPaging(
         schoolId: number,
         data: GetSubscribeNoticesQueryDto,
@@ -61,6 +60,39 @@ export class NoticeRepository {
             .createQueryBuilder('n')
             .innerJoin('n.school', 's')
             .where('s.id = :schoolId', { schoolId })
+            .skip(Number(page) * Number(perPage))
+            .take(Number(perPage))
+            .orderBy('n.createdAt', 'DESC') // * 최신순 정렬
+            .getManyAndCount();
+    }
+
+    async getManyStartDateAndEndDate(
+        schoolId: number,
+        startDate: Date,
+        endDate: Date | null,
+    ): Promise<Notice[]> {
+        const query = this.noticeRepository
+            .createQueryBuilder('n')
+            .select(['n.id'])
+            .innerJoin('n.school', 's')
+            .where('s.id = :schoolId', { schoolId })
+            .andWhere('n.createdAt >= :startDate', { startDate });
+
+        if (endDate) {
+            query.andWhere('n.createdAt <= :endDate', { endDate });
+        }
+        return query.getMany();
+    }
+
+    async getManyAndCountByNoticeIds(
+        noticeIds: number[],
+        data: GetSubscribeNoticeQueryDto,
+    ): Promise<[Notice[], number]> {
+        const { page, perPage } = data;
+        return await this.noticeRepository
+            .createQueryBuilder('n')
+            .innerJoinAndSelect('n.school', 's')
+            .where('n.id IN (:noticeIds)', { noticeIds })
             .skip(Number(page) * Number(perPage))
             .take(Number(perPage))
             .orderBy('n.createdAt', 'DESC') // * 최신순 정렬
