@@ -105,7 +105,7 @@ export class SchoolService {
 
         const subscribe = await this.subscribeRepository.findOneByUserIdAndSchoolId(userId, schoolId);
         if (!subscribe) {
-            return throwError(404, 12012);
+            return throwError(403, 12012);
         }
 
         // * 학교페이지 구독취소여부 판별
