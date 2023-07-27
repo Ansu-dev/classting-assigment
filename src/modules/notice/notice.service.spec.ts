@@ -5,20 +5,7 @@ import { UserRepository } from '../../repository/user.repository';
 import { SubscribeRepository } from '../../repository/subscribe.repository';
 import { NoticeRepository } from '../../repository/notice.repository';
 import { Location } from '../../models/School.entity';
-
-export const getMockRepository = (targetRepository) => {
-    let mockRepository = {};
-
-    Object.getOwnPropertyNames(targetRepository.prototype)
-        .filter((key: string) => key !== 'constructor')
-        .forEach((key: string) => {
-            mockRepository[key] = jest.fn();
-        });
-
-    return mockRepository;
-};
-
-export type MockRepositoryType<T> = Partial<Record<keyof T, jest.Mock>> | Partial<T>;
+import { MockRepositoryType, getMockRepository } from '../../config/mockRepository.config';
 
 describe('NoticeService', () => {
     let service: NoticeService;
