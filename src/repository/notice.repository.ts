@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Notice } from '../models/Notice.entity';
 import { Repository } from 'typeorm';
 import { CreateNoticeType } from '../modules/notice/dto/types/create.types';
+import { UpdateNoticeRequestDto } from '../modules/notice/dto/request/updateNotice.request.dto';
 import { GetSubscribeNoticesQueryDto } from '../modules/notice/dto/request/getSubscribeNotices.request.dto';
 
 @Injectable()
@@ -49,6 +50,7 @@ export class NoticeRepository {
             .andWhere('u.id = :userId', { userId })
             .getOne();
     }
+
 
     async getManyByPaging(
         schoolId: number,
