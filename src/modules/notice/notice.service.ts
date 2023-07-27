@@ -8,6 +8,8 @@ import { throwError } from '../../config/errorMessage.config';
 import { CreateNoticeType } from './dto/types/create.types';
 import { UpdateNoticeRequestDto } from './dto/request/updateNotice.request.dto';
 import { DeleteNoticeType } from './dto/types/delete.types';
+import { GetSubscribeNoticesData } from './dto/response/getSubscribeNotices.response.dto';
+import { GetSubscribeNoticesQueryDto } from './dto/request/getSubscribeNotices.request.dto';
 
 @Injectable()
 export class NoticeService {
@@ -87,6 +89,39 @@ export class NoticeService {
         };
         await this.noticeRepository.update(userId, noticeId, deleteData);
         return { resultCode: 1, data: null };
+    }
+
+    async getSubscribeNotices(userId: number, schoolId: number, query: GetSubscribeNoticesQueryDto) {
+        // * 유저가 실제 존재하는 유저인지 판별
+        const user = await this.userRepository.findOneById(userId);
+        if (!user) {
+            return throwError(401, 10000);
+        }
+
+        // * 학교 페이지 유무 판별
+        const school = await this.schoolRepository.findOneBySchoolId(schoolId);
+        if (!school) {
+            return throwError(404, 12001);
+        }
+
+        // * 해당 학교의 구독 유무 확인
+        const items: GetSubscribeNoticesData[] = [];
+        let count = 0;
+        const subscribe = await this.subscribeRepository.findOneByUserIdAndSchoolId(userId, schoolId);
+        // * 구독이 존재하고 구독취소가 되어있는 상태가 아니라면
+        if (subscribe && subscribe.subscribe) {
+            const [rows, cnt] = await this.noticeRepository.getManyByPaging(schoolId, query);
+            for (const notice of rows) {
+                items.push({
+                    noticeId: notice.id,
+                    title: notice.title,
+                    content: notice.content,
+                    createdAt: notice.createdAt,
+                });
+            }
+            count = cnt;
+        }
+        return { resultCode: 1, data: { items, count } };
     }
 
     // ! Validate

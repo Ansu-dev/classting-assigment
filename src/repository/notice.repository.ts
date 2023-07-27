@@ -4,6 +4,7 @@ import { Notice } from '../models/Notice.entity';
 import { Repository } from 'typeorm';
 import { CreateNoticeType } from '../modules/notice/dto/types/create.types';
 import { UpdateNoticeRequestDto } from '../modules/notice/dto/request/updateNotice.request.dto';
+import { GetSubscribeNoticesQueryDto } from '../modules/notice/dto/request/getSubscribeNotices.request.dto';
 
 @Injectable()
 export class NoticeRepository {
@@ -48,5 +49,21 @@ export class NoticeRepository {
             .where('n.id = :noticeId', { noticeId })
             .andWhere('u.id = :userId', { userId })
             .getOne();
+    }
+
+
+    async getManyByPaging(
+        schoolId: number,
+        data: GetSubscribeNoticesQueryDto,
+    ): Promise<[Notice[], number]> {
+        const { page, perPage } = data;
+        return await this.noticeRepository
+            .createQueryBuilder('n')
+            .innerJoin('n.school', 's')
+            .where('s.id = :schoolId', { schoolId })
+            .skip(Number(page) * Number(perPage))
+            .take(Number(perPage))
+            .orderBy('n.createdAt', 'DESC') // * 최신순 정렬
+            .getManyAndCount();
     }
 }
