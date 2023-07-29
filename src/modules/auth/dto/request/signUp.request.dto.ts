@@ -14,4 +14,8 @@ export class SignUpRequestDto {
     @IsString()
     @ApiProperty()
     name: string;
+
+    @IsString()
+    @ApiProperty()
+    role: string;
 }

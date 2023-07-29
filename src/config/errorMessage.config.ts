@@ -18,8 +18,9 @@ export const ErrorMessage = {
     10002: { resultCode: -10002, data: '접근할 수 없는 학교 페이지' },
     10003: { resultCode: -10003, data: '접근할 수 없는 게시물' },
 
-    // * login
-    11000: { resultCode: -11000, data: '옳지 않는 비밀번호' },
+    // * user
+    11000: { resultCode: -11000, data: '이미 존재하는 계정' },
+    11001: { resultCode: -11001, data: '비밀번호가 옳바르지 않습니다.' },
 
     // * school
     12000: { resultCode: -12000, data: '이미 존재하는 학교페이지 입니다.' },

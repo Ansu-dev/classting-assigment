@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import { GetTokenType } from './types/getToken.type';
 
 @Injectable()
 export class JwtService {
@@ -8,16 +9,10 @@ export class JwtService {
         this.jwtSecret = process.env.JWT_SECRET_KEY ? process.env.JWT_SECRET_KEY : '';
     }
 
-    getToken(userId: number) {
-        const accessToken = sign({ userId }, this.jwtSecret, { expiresIn: '1h' });
-        const refreshToken = sign({ userId }, this.jwtSecret, { expiresIn: '1d' });
-
-        const data = {
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-        };
-
-        return data;
+    getToken(userId: number): GetTokenType {
+        const accessToken: string = sign({ userId }, this.jwtSecret, { expiresIn: '1h' });
+        const refreshToken: string = sign({ userId }, this.jwtSecret, { expiresIn: '1d' });
+        return { accessToken, refreshToken };
     }
 
     verifyToken(token: string) {
