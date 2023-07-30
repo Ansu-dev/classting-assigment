@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-    server:
+    classting-server:
         build:
             dockerfile: Dockerfile
         environment:
@@ -8,11 +8,9 @@ services:
             - NODE_ENV=dev
             - DB_HOST=host.docker.internal
             - SERVER_PORT=3000
-        container_name: nest-backend
+        container_name: classting-server
         restart: unless-stopped
         ports:
             - 3000:3000
-        depends_on:
-            - redis
         extra_hosts:
             - 'host.docker.internal:host-gateway'
