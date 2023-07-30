@@ -27,7 +27,7 @@ export class Notice {
     @JoinColumn()
     school: School;
 
-    @Column({ type: 'timestamp' })
+    @Column({ type: 'timestamp', default: null })
     deletedAt: Date | null;
 
     @CreateDateColumn({ type: 'timestamp' })

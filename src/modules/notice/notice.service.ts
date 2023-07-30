@@ -63,7 +63,7 @@ export class NoticeService {
         await this.noticeValidate(userId, noticeId);
 
         if (title || content) {
-            await this.noticeRepository.update(userId, noticeId, body);
+            await this.noticeRepository.update(noticeId, body);
         }
         return { resultCode: 1, data: null };
     }
@@ -87,7 +87,7 @@ export class NoticeService {
             enable: false,
             deletedAt: new Date(),
         };
-        await this.noticeRepository.update(userId, noticeId, deleteData);
+        await this.noticeRepository.update(noticeId, deleteData);
         return { resultCode: 1, data: null };
     }
 

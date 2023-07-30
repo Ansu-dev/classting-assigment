@@ -22,15 +22,12 @@ export class NoticeRepository {
         return await this.noticeRepository.save(notice);
     }
 
-    async update(userId: number, noticeId: number, data: any): Promise<void> {
+    async update(noticeId: number, data: any): Promise<void> {
         await this.noticeRepository
             .createQueryBuilder('n')
-            .innerJoin('n.school', 's')
-            .innerJoin('s.user', 'u')
             .update()
             .set(data)
-            .where('u.id = :userId', { userId })
-            .andWhere('n.id = :noticeId', { noticeId })
+            .where('id = :noticeId', { noticeId })
             .execute();
     }
 
@@ -45,7 +42,7 @@ export class NoticeRepository {
         return await this.noticeRepository
             .createQueryBuilder('n')
             .innerJoin('n.school', 's')
-            .innerJoin('s.user', 'u')
+            .leftJoin('s.user', 'u')
             .where('n.id = :noticeId', { noticeId })
             .andWhere('u.id = :userId', { userId })
             .getOne();
