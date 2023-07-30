@@ -26,6 +26,9 @@ DB_SYNC=false
 JWT_SECRET_KEY=jwt_secret_key(jwt 토큰발행에 필요)
 
 환경변수 설정
+
+PORT를 지정하지 않을경우 자동으로 3000번 PORT로 실행되며
+API 명세는 http://localhost:[지정포트]/swagger 확인가능합니다.
 ```
 
 <br/>
