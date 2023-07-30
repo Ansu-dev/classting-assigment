@@ -51,17 +51,25 @@ export class UserService {
 
         // * merge된 소식을 날짜 순으로 정렬
         const items: GetSubscribeNoticeData[] = [];
-        const [rows, count] = await this.noticeRepository.getManyAndCountByNoticeIds(mergeNoticeIds, query);
-        for (const notice of rows) {
-            const school = notice.school;
-            items.push({
-                noticeId: notice.id,
-                location: school.location,
-                name: school.name,
-                title: notice.title,
-                content: notice.content,
-                createdAt: notice.createdAt,
-            });
+        let count = 0;
+        // * mergeNoticeIds가 빈배열일경우 예외처리
+        if (mergeNoticeIds.length > 0) {
+            const [rows, cnt] = await this.noticeRepository.getManyAndCountByNoticeIds(
+                mergeNoticeIds,
+                query,
+            );
+            for (const notice of rows) {
+                const school = notice.school;
+                items.push({
+                    noticeId: notice.id,
+                    location: school.location,
+                    name: school.name,
+                    title: notice.title,
+                    content: notice.content,
+                    createdAt: notice.createdAt,
+                });
+            }
+            count = cnt;
         }
         return { resultCode: 1, data: { items, count } };
     }

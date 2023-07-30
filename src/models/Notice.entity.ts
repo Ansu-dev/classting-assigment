@@ -20,7 +20,7 @@ export class Notice {
     @Column({ length: 1000, nullable: false, comment: '소식 내용' })
     content: string;
 
-    @Column({ default: false, comment: '활성화 여부' })
+    @Column({ default: true, comment: '활성화 여부' })
     enable: boolean;
 
     @ManyToOne(() => School, (school) => school.notice, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
