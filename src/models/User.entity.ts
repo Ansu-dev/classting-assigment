@@ -3,6 +3,7 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -24,7 +25,7 @@ export class User {
     @Column({ length: 50, nullable: false, comment: '이름' })
     name: string;
 
-    @OneToOne(() => Role, (role) => role.user)
+    @ManyToOne(() => Role, (role) => role.user)
     @JoinColumn()
     role: Role;
 

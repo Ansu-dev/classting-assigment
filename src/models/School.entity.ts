@@ -3,8 +3,8 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -33,7 +33,7 @@ export class School {
     @Column({ type: 'enum', enum: Location, nullable: false, comment: '지역' })
     location: Location;
 
-    @OneToOne(() => User, (user) => user.school)
+    @ManyToOne(() => User, (user) => user.school)
     @JoinColumn()
     user: User;
 
@@ -44,5 +44,5 @@ export class School {
     updatedAt: Date;
 
     @OneToMany(() => Notice, (notice) => notice.school, { cascade: true })
-    notice: Notice;
+    notice: Notice[];
 }
