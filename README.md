@@ -58,7 +58,7 @@
 
 ## 📖 ERD <br/>
 
-<img width="790" alt="스크린샷 2023-07-31 오전 9 23 04" src="https://github.com/Ansu-dev/classting-assigment/assets/108314208/dd4c4112-36e9-4b91-bb06-295801109ee0">
+<img width="790" alt="스크린샷 2023-07-31 오전 9 23 04" src="https://github.com/Ansu-dev/classting-assigment/assets/108314208/5de64325-21b2-4539-8c3c-80b80367574b">
 
 ## ✔️ Settings
 
@@ -103,7 +103,7 @@ docker compose up classting-server -d --build
 
 <br/>
 
-## ✔️ 과제전향을 진행하며...
+## ✔️ 과제전형을 진행하며...
 
 ```
 과제가 실제 서비스를 개발하는 것과 유사한 형태로 주어졌기 때문에, 현실적인 요구사항과 제약 사항을 고려하면서 문제를 해결하려 노력하였습니다.
