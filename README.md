@@ -85,7 +85,6 @@ API 명세는 http://localhost:[지정포트]/swagger 확인가능합니다.
 
 ```bash
 yarn // package 설치
-yarn start:dev [애플리케이션 명칭]
 
 ...
 
