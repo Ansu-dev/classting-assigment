@@ -1,5 +1,9 @@
 # Classting-Backend
 
+## 📖 ERD <br/>
+
+<img width="790" alt="스크린샷 2023-07-31 오전 9 23 04" src="https://github.com/Ansu-dev/classting-assigment/assets/108314208/dd4c4112-36e9-4b91-bb06-295801109ee0">
+
 ## 🛠️ Version <br/>
 
 ![Node.js 버전](https://img.shields.io/badge/Node.js-18.13.0-brightgreen) ![Nest.js 버전](https://img.shields.io/badge/Nest.js-9.0.0-red) ![Typeorm 버전](https://img.shields.io/badge/Typeorm-0.3.17-blue)
