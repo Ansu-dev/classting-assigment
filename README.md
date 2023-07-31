@@ -1,22 +1,64 @@
 # Classting-Backend
 
-## 📖 ERD <br/>
-
-<img width="790" alt="스크린샷 2023-07-31 오전 9 23 04" src="https://github.com/Ansu-dev/classting-assigment/assets/108314208/dd4c4112-36e9-4b91-bb06-295801109ee0">
-
 ## 🛠️ Version <br/>
 
 ![Node.js 버전](https://img.shields.io/badge/Node.js-18.13.0-brightgreen) ![Nest.js 버전](https://img.shields.io/badge/Nest.js-9.0.0-red) ![Typeorm 버전](https://img.shields.io/badge/Typeorm-0.3.17-blue)
 
 <br/>
 
-## ✔️ 디렉토리 구조(apps를 포함한 전체 프로젝트)
+## ✔️ 디렉토리 구조
 
 ```
-
+📦src
+ ┣ 📂config
+ ┃ ┣ 📜errorMessage.config.ts : throw error exception에 대한 에러코드 정의
+ ┃ ┗ 📜mockRepository.config.ts : test code 작성에 필요한 mock repository 설정
+ ┣ 📂decorator
+ ┃ ┗ 📜getUser.decorator.ts : access guard로 부터 얻어오는 user의 id를 모듈화
+ ┣ 📂guard
+ ┃ ┣ 📂guard
+ ┃ ┃ ┣ 📜accessToken.guard.ts : user 검증 guard
+ ┃ ┃ ┗ 📜admin.guard.ts : admin role guard
+ ┃ ┗ 📂strategy
+ ┃ ┃ ┗ 📜accessToken.strategy.ts
+ ┣ 📂interceptor
+ ┃ ┗ 📜logging.interceptor.ts : 요청에 대한 logging 설정
+ ┣ 📂libs
+ ┃ ┣ 📂crypto : 비밀번호 암호화에 대한 함수 module화
+ ┃ ┃ ┣ 📜crypto.module.ts
+ ┃ ┃ ┗ 📜crypto.service.ts
+ ┃ ┗ 📂jwt : token 발행과 검증에대한 함수 module화
+ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┗ 📜getToken.type.ts
+ ┃ ┃ ┣ 📜jwt.module.ts
+ ┃ ┃ ┗ 📜jwt.service.ts
+ ┣ 📂models : Database의 테이블 객체
+ ┃ ┣ 📜Notice.entity.ts
+ ┃ ┣ 📜Role.entity.ts
+ ┃ ┣ 📜School.entity.ts
+ ┃ ┣ 📜Subscribe.entity.ts
+ ┃ ┗ 📜User.entity.ts
+ ┣ 📂modules : 도메인들의 controller, service, module
+ ┃ ┣ 📂auth
+ ┃ ┣ 📂common
+ ┃ ┃ ┗ 📜common.response.dto.ts
+ ┃ ┣ 📂notice
+ ┃ ┣ 📂school
+ ┃ ┣ 📂user
+ ┃ ┗ 📜index.module.ts : 도메인을 root module
+ ┣ 📂repository : repository 전략을 통한 orm 함수
+ ┣ 📂typeorm : database 설정
+ ┃ ┣ 📜typeorm.module.ts
+ ┃ ┗ 📜typeorm.service.ts
+ ┣ 📜app.module.ts : root module(global config, orm 연결 등...)
+ ┗ 📜main.ts
 ```
 
 <br/>
+
+## 📖 ERD <br/>
+
+<img width="790" alt="스크린샷 2023-07-31 오전 9 23 04" src="https://github.com/Ansu-dev/classting-assigment/assets/108314208/dd4c4112-36e9-4b91-bb06-295801109ee0">
 
 ## ✔️ Settings
 
